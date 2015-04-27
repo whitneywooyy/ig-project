@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html ng-app="anywhereintheworld">
+	<head>
+		<title>Anywhere in the World</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</head>
+	<body ng-controller="mainCtrl">
+
+		<!-- HEADER -->
+		<header>
+			<h2>If You Could Go</h2>
+			<h1>Anywhere in the World</h1>
+			<h2>Where Would You Go?</h2>
+		</header>
+
+		<input type="text" ng-model="location" placeholder="Enter a Location" />
+		<input type="text" ng-model="near" placeholder="Where is {{location}}?" />
+		<button ng-click="searchTerm()">Submit</button>
+
+		<!-- MOVE INTO MAIN CONTAINER -->
+		<h2>Search Results</h2>
+		<div ng-repeat="place in searchResults">
+			<div class="search-results inline">{{place.Place}}</div>
+			<div class="search-results inline">near {{place.City}}, {{place.Country}}</div>
+			<div class="search-results inline"> - Check-in's: {{place.Checkins}}</div>
+		</div>
+
+
+		<!-- MAIN CONTAINER // DON'T TOUCH -->
+		<div class="container" ng-view>
+		</div>
+
+		<!-- FOOTER -->
+		<footer>
+		</footer>
+
+
+	<!-- SCRIPTS -->
+	<script src="js/angular.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/mainCtrl.js"></script>
+	<script src="js/mainService.js"></script>
+	<script src=""></script>
+	<script src=""></script>
+</body>
+</html>
