@@ -51,7 +51,7 @@ app.service('mainService', function($http, $q, foursquare, instagram){
 					};	// End nested for loop
 
 				};	// End outer for loop
-				console.log("foursquare id", foursquareLocationId);
+				// console.log("foursquare id", foursquareLocationId);
 
 				
 				// INSTAGRAM
@@ -69,15 +69,33 @@ app.service('mainService', function($http, $q, foursquare, instagram){
 								parsedResArr[k].igLocationLng = igParsedResponse[0].longitude;
 								parsedResArr[k].igLocationName = igParsedResponse[0].name;
 							}
-						};	// End for loop
-					})
-						
-			});	// End forEach
 
-			// $http({
-			// 	method: "GET",
-			// 	url: ""
-			// })
+						};	// End for loop
+
+						for (var key in newObj) {
+							if (key === 'igLocationId') {
+								// console.log("key:", key);
+								var instagramLocationId = newObj[key];
+							}
+						};	// End for loop
+						console.log("instagramLocationId", instagramLocationId);
+
+						$http({
+							method: "GET",
+							url: "https://api.instagram.com/v1/locations/" + instagramLocationId + "/media/recent?&client_id=" + instagram.id
+						}).then(function(igResponse2){
+							var igMediaData = igResponse2.data;
+							// for (var m = 0; m < parsedResArr.length; m++) {
+							// 	if (parsedResArr[m].igLocationId === instagramLocationId) {
+							// 		console.log(igMediaData);
+							// 	}
+							// }	// End for loop
+							// console.log("igReponse2", igReponse2);
+						});	// End .then(function(igReponse2)
+
+					});	// End .then(function(igResponse)
+
+			});	// End forEach
 
 			dfd.resolve(parsedResArr);
 
