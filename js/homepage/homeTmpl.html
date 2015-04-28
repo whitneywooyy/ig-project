@@ -1,0 +1,7 @@
+<h2>Search Results</h2>
+<div ng-repeat="place in searchResults">
+	<div class="search-results"><a href="#" ng-click="getPlaceData(place)">{{place.Place}}</a></div>
+	<div class="search-results">near {{place.City}}, {{place.Country}}</div>
+	<div class="search-results"> - Check-in's: {{place.Checkins}}</div>
+	<!-- <div class="search-results"> - IGLocationID: {{place.igLocationId}}</div> -->
+</div>

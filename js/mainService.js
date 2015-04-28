@@ -1,120 +1,101 @@
 var app = angular.module('anywhereintheworld');
 
 app.service('mainService', function($http, $q, foursquare, instagram){
+
+		var parsedRes = undefined;
+		var parsedResArr = [];
+		var newObj = {};
+		var foursquareLocationId = undefined;
+		var igParsedResponse = undefined;
+		var instagramLocationId = undefined;
+		var igMediaData = undefined;
+
 	// FOURSQUARE
 	this.searchTerm = function(place, near) {
-		// FOURSQUARE
 		var dfd = $q.defer();
 		$http({
 			method: "GET",
-			url: "https://api.foursquare.com/v2/venues/search/?client_id=" + foursquare.id + "&client_secret=" + foursquare.secret + "&limit=25&radius=100000&v=20150424&intent=browse&near=" + near + "&query=" + place
+			url: "https://api.foursquare.com/v2/venues/search/?client_id=" + foursquare.id + "&client_secret=" + foursquare.secret + "&limit=10&radius=100000&v=20150424&intent=browse&near=" + near + "&query=" + place
 		}).then(function(fsResponse){
-			// FOURSQUARE DATA
-			var parsedRes = fsResponse.data.response.venues;
-			// console.log("parsedRes", parsedRes);
-			var parsedResArr = [];
-			
-			parsedRes.forEach(function(item, index){
-			// for (var i = 0; i < parsedRes.length; i++) {
+			parsedRes = fsResponse.data.response.venues;
+			// parsedRes.forEach(function(item, index){
+			for (var i = 0; i < parsedRes.length; i++) {
 				// console.log("Index", index);
-				// var locationId = parsedRes[i].id;
-				var newObj = {
-					Place: item.name,
-					StreetAddress: item.location.address,
-					City: item.location.city,
-					State: item.location.formattedAddress.state,
-					ZipCode: item.location.formattedAddress.postalCode,
-					Country: item.location.country,
-					Latitude: item.location.formattedAddress.lat,
-					Longitude: item.location.formattedAddress.lng,
-					Checkins: item.stats.checkinsCount,
-					fsLocationId: item.id
+				newObj = {
+					Place: parsedRes[i].name,
+					StreetAddress: parsedRes[i].location.address,
+					City: parsedRes[i].location.city,
+					State: parsedRes[i].location.formattedAddress.state,
+					ZipCode: parsedRes[i].location.formattedAddress.postalCode,
+					Country: parsedRes[i].location.country,
+					Latitude: parsedRes[i].location.formattedAddress.lat,
+					Longitude: parsedRes[i].location.formattedAddress.lng,
+					Checkins: parsedRes[i].stats.checkinsCount,
+					fsLocationId: parsedRes[i].id
 				};	// End newObj
 				parsedResArr.push(newObj);
-				parsedResArr.sort(function(a, b){
-					if (a.Checkins < b.Checkins) {
-						return 1;
-					}
-					else if (a.Checkins > b.Checkins) {
-						return -1;
-					}
-					// If a is equal to b
-					return 0;
-				});	// End parsedResArr.sort
+			};	// End for loop
 
-				for (var j = 0; j < parsedResArr.length; j++) {
-					for (var key in newObj) {
-						if (key === 'fsLocationId') {
-							// console.log("key:", key);
-							var foursquareLocationId = newObj[key];
-						}
-					};	// End nested for loop
+			parsedResArr.sort(function(a, b){
+				if (a.Checkins < b.Checkins) {
+					return 1;
+				}
+				else if (a.Checkins > b.Checkins) {
+					return -1;
+				}
+				// If a is equal to b
+				return 0;
+			});	// End parsedResArr.sort
 
-				};	// End outer for loop
-				// console.log("foursquare id", foursquareLocationId);
-
+			console.log("parsedResArr", parsedResArr);
 				
-				// INSTAGRAM
-					// var deferred = $q.defer();
-					$http({
-						method: "GET",
-						url: "https://api.instagram.com/v1/locations/search?foursquare_v2_id=" + foursquareLocationId + "&client_id=" + instagram.id
-					}).then(function(igResponse){
-						// console.log("igResponse", igResponse);
-						var igParsedResponse = igResponse.data.data;
-						for (var k = 0; k < parsedResArr.length; k++) {
-							if (parsedResArr[k].fsLocationId === foursquareLocationId) {
-								parsedResArr[k].igLocationId = igParsedResponse[0].id;
-								parsedResArr[k].igLocationLat = igParsedResponse[0].latitude;
-								parsedResArr[k].igLocationLng = igParsedResponse[0].longitude;
-								parsedResArr[k].igLocationName = igParsedResponse[0].name;
-							}
-
-						};	// End for loop
-
-						for (var key in newObj) {
-							if (key === 'igLocationId') {
-								// console.log("key:", key);
-								var instagramLocationId = newObj[key];
-							}
-						};	// End for loop
-						console.log("instagramLocationId", instagramLocationId);
-
-						$http({
-							method: "GET",
-							url: "https://api.instagram.com/v1/locations/" + instagramLocationId + "/media/recent?&client_id=" + instagram.id
-						}).then(function(igResponse2){
-							var igMediaData = igResponse2.data;
-							// for (var m = 0; m < parsedResArr.length; m++) {
-							// 	if (parsedResArr[m].igLocationId === instagramLocationId) {
-							// 		console.log(igMediaData);
-							// 	}
-							// }	// End for loop
-							// console.log("igReponse2", igReponse2);
-						});	// End .then(function(igReponse2)
-
-					});	// End .then(function(igResponse)
-
-			});	// End forEach
-
 			dfd.resolve(parsedResArr);
 
 		})	// End .then(function(fsResponse)
 
 		return dfd.promise;
 			
-	}	// End this.searchTerm
+	};	// End this.searchTerm
+
 });	// End app.service
 
 
 
-// newObj.igLocationId = igResponse[j].location.id;
-						// // Latitude: igParsedRes[j].location.latitude,
-						// // Longitude: igParsedRes[j].location.longitude,
-						// // mediaUrl: igParsedRes[j].images.standard_resolution.url,
-						// // mediaCaption: igParsedRes[j].caption.text,
-						// // mediaOwnerUsername: "@" + igParsedRes[j].caption.from.username,
-						// // mediaOwnerProfPicUrl: igParsedRes[j].caption.from.profile_picture,
+
+// for (var key in newObj) {
+			// 	if (key === 'igLocationId') {
+			// 		// console.log("key:", key);
+			// 		instagramLocationId = newObj[key];
+			// 	}
+			// };	// End for loop
+			// console.log("instagramLocationId", instagramLocationId);
+
+			// $http({
+			// 	method: "GET",
+			// 	url: "https://api.instagram.com/v1/locations/" + instagramLocationId + "/media/recent?&client_id=" + instagram.id
+			// }).then(function(igResponse2){
+			// 	// console.log("igResponse2", igResponse2);
+			// 	igMediaData = igResponse2.data.data;
+			// 	console.log("igMediaData", igMediaData);
+			// 	console.log("parsedResArr", parsedResArr);
+			// 	// for (var m = 0; m < parsedResArr.length; m++) {
+			// 	// 	if (parsedResArr[m].igLocationId === instagramLocationId) {
+			// 	// 		// console.log("igMediaData", igMediaData);
+			// 	// 		newObj.Latitude = igParsedResponse[m].location.latitude;
+			// 	// 		newObj.Longitude = igParsedResponse[m].location.longitude;
+			// 	// 		newObj.mediaUrl = igParsedResponse[m].images.standard_resolution.url;
+			// 	// 		newObj.mediaCaption = igParsedResponse[m].caption.text;
+			// 	// 		newObj.mediaOwnerUsername = "@" + igParsedResponse[m].caption.from.username;
+			// 	// 		newObj.mediaOwnerProfPicUrl = igParsedResponse[m].caption.from.profile_picture;
+			// 	// 	}
+			// 	// }	// End for loop
+
+			// 	// console.log("igResponse2", igResponse2);
+			// });	// End .then(function(igReponse2)
+
+
+
+						
 						// 		// if (key === 'fsLocationId') {
 						// 		// 	// console.log("key:", key);
 						// 		// 	var foursquareLocationId = newObj[key];
