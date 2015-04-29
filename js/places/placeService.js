@@ -48,10 +48,9 @@ app.service('placeService', function($http, $q, homeService, instagram){
 					place.mediaDataArray.push(mediaDataObj);
 					// place.mediaDataObj.push(mediaDataArray);
 				};	// End for loop
-				// console.log("place", place);
+				console.log("place", place);
 				
-
-			});	// End 
+			});	// End .then(function(igMediaResponse)
 
 			dfd.resolve(place);
 
