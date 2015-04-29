@@ -6,7 +6,6 @@ app.controller('mainCtrl', function($scope, homeService){
 		homeService.searchTerm($scope.location, $scope.near).then(function(resFromService){
 			// console.log("resFromService", resFromService);
 			$scope.searchResults = resFromService;
-			// console.log("$scope.searchResults", $scope.searchResults);
 			
 			$scope.location = "";
 			$scope.near = "";

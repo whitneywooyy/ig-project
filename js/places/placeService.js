@@ -1,13 +1,14 @@
 var app = angular.module('anywhereintheworld');
 
-app.service('placeService', function($http, $q, homeService, instagram){
-
-	var parsedResArr2 = homeService.parsedResArr;
+app.service('placeService', function($http, $q, homeService, instagram, $location){
+ 
+ 	var ps = this;
+	// var parsedResArr2 = homeService.parsedResArr;
 	var igParsedResponse = undefined;
 	var igParsedMediaResponse = undefined;
-
+	ps.individualPlaceData = "too fast";
 	// INSTAGRAM - USER SELECTION
-	this.getPlaceData = function(place){
+	ps.getPlaceData = function(place){
 
 		// console.log("place", place);
 		
@@ -24,13 +25,13 @@ app.service('placeService', function($http, $q, homeService, instagram){
 			place.igLocationLat = igParsedResponse[0].latitude;
 			place.igLocationLng = igParsedResponse[0].longitude;
 			place.igLocationName = igParsedResponse[0].name;
-			console.log("placeData", place);
+			// console.log("placeData", place);
 
 			$http({
 				method: "GET",
 				url: "https://api.instagram.com/v1/locations/" + place.igLocationId + "/media/recent?client_id=" + instagram.id
 			}).then(function(igMediaResponse){
-				console.log("igMediaResponse", igMediaResponse)
+				// console.log("igMediaResponse", igMediaResponse)
 				igParsedMediaResponse = igMediaResponse.data.data;
 				// console.log("igParsedMediaResponse", igParsedMediaResponse);
 
@@ -48,10 +49,13 @@ app.service('placeService', function($http, $q, homeService, instagram){
 					place.mediaDataArray.push(mediaDataObj);
 					// place.mediaDataObj.push(mediaDataArray);
 				};	// End for loop
-				console.log("place", place);
+				// console.log("place", place);
 				
 			});	// End .then(function(igMediaResponse)
-
+			
+			ps.individualPlaceData = place;
+			// $location.path("/places/placeId");
+	
 			dfd.resolve(place);
 
 		});	// End .then(function(igResponse)
