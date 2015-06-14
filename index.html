@@ -3,26 +3,35 @@
 	<head>
 		<title>Anywhere in the World</title>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link href='http://fonts.googleapis.com/css?family=Actor' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
 	</head>
 	<body ng-controller="mainCtrl">
+		<div class="container">
 
 		<!-- HEADER -->
 		<header>
-			<h2>If You Could Go</h2>
-			<h1>Anywhere in the World</h1>
-			<h2>Where Would You Go?</h2>
-			<input type="text" ng-model="location" placeholder="Enter a Location" />
-			<input type="text" ng-model="near" placeholder="Where is {{location}}?" />
-			<button ng-click="searchTerm()">Submit</button>
+			<div class="tagline">
+				<h2>If You Could Go</h2>
+				<h1 class="shadow-font">Anywhere in the World</h1>
+				<h2 class="italic">...Where Would You Go?</h2>
+			</div>
+			<div class="inputs">
+				<input type="text" ng-model="location" placeholder="Enter a Location" />
+				<input type="text" ng-model="near" placeholder="Where is {{location}}?" />
+				<button ng-click="searchTerm()">Submit</button>
+				<p><a class="italic" ui-sref="home">Reset</a></p>
+			</div>
 		</header>
 
 		<!-- MAIN CONTAINER // DON'T TOUCH -->
-		<div class="container" ui-view>
+		<div ui-view>
 		</div>
 
 		<!-- FOOTER -->
 		<footer>
 		</footer>
+		</div>
 
 
 	<!-- SCRIPTS -->
