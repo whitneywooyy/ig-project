@@ -1,0 +1,27 @@
+{
+  "name": "instagram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whitneywooyy/ig-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whitneywooyy/ig-project/issues"
+  },
+  "homepage": "https://github.com/whitneywooyy/ig-project",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "cors": "^2.7.1",
+    "dotenv": "^1.2.0",
+    "express": "^4.13.1",
+    "passport": "^0.2.2"
+  }
+}

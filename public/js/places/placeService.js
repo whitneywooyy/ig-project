@@ -6,7 +6,7 @@ app.service('placeService', function($http, $q, homeService, instagram, $locatio
 	// var parsedResArr2 = homeService.parsedResArr;
 	var igParsedResponse = undefined;
 	var igParsedMediaResponse = undefined;
-	ps.individualPlaceData = "too fast";
+	// ps.individualPlaceData = "too fast";
 	// INSTAGRAM - USER SELECTION
 	ps.getPlaceData = function(place){
 

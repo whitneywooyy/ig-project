@@ -10,7 +10,7 @@
 		<h2>Welcome to <span class="shadow-font">{{placeData.Place}}</span> in {{placeData.City}}, {{placeData.Country}}</h2>
 		<div class="ig-image" ng-repeat="mediaItem in placeData.mediaDataArray">
 			<div><img src="{{mediaItem.imageUrl}}" /></div>
-			<div class="username">Taken by @{{mediaItem.username}}</div>
+			<div class="username">Taken by <a href="http://instagram.com/{{mediaItem.username}}">@{{mediaItem.username}}</a></div>
 			<!-- <img src="{{dataItem.mediaDataArray.imageUrl}}" /> -->
 		</div>
 	</div>

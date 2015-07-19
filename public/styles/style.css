@@ -1,7 +1,7 @@
 body, html {
 	margin: 0;
 	padding: 0;
-	background-image: url('images/world-map-sm.jpg');
+	background-image: url('../images/world-map-sm.jpg');
 	font-family: 'Actor', sans-serif;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
